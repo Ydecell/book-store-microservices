@@ -1,0 +1,28 @@
+server:
+  port: ${EUREKA_PORT:8761}
+
+spring:
+  application:
+    name: naming-server
+
+eureka:
+  server:
+    enable-self-preservation: false
+    response-cache-update-interval-ms: 2000
+    eviction-interval-timer-in-ms: 2000
+  instance:
+    hostname: naming-server
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: when-authorized
