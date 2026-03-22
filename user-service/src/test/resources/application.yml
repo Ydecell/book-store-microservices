@@ -1,0 +1,32 @@
+spring:
+  cloud:
+    config:
+      enabled: false
+
+  datasource:
+    url: jdbc:tc:mysql:8:///userservice_test
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+    username: test
+    password: test
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+  liquibase:
+    enabled: true
+
+eureka:
+  client:
+    enabled: false
+    register-with-eureka: false
+    fetch-registry: false
+
+jwt:
+  secret: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
+  expiration: 3600000
+
+internal:
+  token: ${INTERNAL_TOKEN:test-internal-token}
