@@ -14,6 +14,7 @@ import com.daniil.bookstore.commonsecurity.exception.EntityNotFoundException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -85,6 +86,15 @@ public class BookServiceImpl implements BookService {
         if (categoryIds == null || categoryIds.isEmpty()) {
             return new HashSet<>();
         }
-        return new HashSet<>(categoryRepository.findAllById(categoryIds));
+        Set<Category> found = new HashSet<>(categoryRepository.findAllById(categoryIds));
+        if (found.size() != categoryIds.size()) {
+            Set<Long> foundIds = found.stream()
+                    .map(Category::getId)
+                    .collect(Collectors.toSet());
+            Set<Long> missing = new HashSet<>(categoryIds);
+            missing.removeAll(foundIds);
+            throw new EntityNotFoundException("Categories not found with ids: " + missing);
+        }
+        return found;
     }
 }
