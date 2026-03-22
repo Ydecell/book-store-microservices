@@ -1,0 +1,70 @@
+spring:
+  application:
+    name: cart-service
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/cart_db?serverTimezone=UTC
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        delay_entity_loader_creations: true
+  mvc:
+    servlet:
+      path: /api
+      
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
+      client:
+        config:
+          default:
+            connect-timeout: 2000   
+            read-timeout: 5000      
+          book-service:
+            connect-timeout: 2000
+            read-timeout: 3000      
+
+server:
+  port: 8003
+
+jwt:
+  secret: ${JWT_SECRET}
+
+internal:
+  token: ${INTERNAL_TOKEN}
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      book-service:
+        sliding-window-size: 10
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10s
+        permitted-number-of-calls-in-half-open-state: 3
+        automatic-transition-from-open-to-half-open-enabled: true
+        register-health-indicator: true
+        slow-call-rate-threshold: 80
+        slow-call-duration-threshold: 3s
+  retry:
+    instances:
+      book-service:
+        max-attempts: 3
+        wait-duration: 1s
+        retry-exceptions:
+          - feign.RetryableException
+          - java.net.ConnectException
+          - java.util.concurrent.TimeoutException
+
+  timelimiter:
+    configs:
+      default:
+        timeout-duration: 10s
+        cancel-running-future: true
