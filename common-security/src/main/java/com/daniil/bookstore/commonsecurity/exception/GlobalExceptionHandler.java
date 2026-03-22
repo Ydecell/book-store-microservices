@@ -1,6 +1,5 @@
 package com.daniil.bookstore.commonsecurity.exception;
 
-import feign.FeignException;
 import jakarta.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -106,20 +105,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         log.error("Unexpected error: {}", ex.getMessage(), ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ErrorResponse.of(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred"));
-    }
-
-    @ExceptionHandler(FeignException.NotFound.class)
-    public ResponseEntity<ErrorResponse> handleFeignNotFound(FeignException.NotFound ex) {
-        log.warn("Resource not found via Feign: {}", ex.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(ErrorResponse.of(HttpStatus.NOT_FOUND, "Resource not found"));
-    }
-
-    @ExceptionHandler(FeignException.class)
-    public ResponseEntity<ErrorResponse> handleFeignException(FeignException ex) {
-        log.error("Feign client error: status={}, message={}", ex.status(), ex.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
-                .body(ErrorResponse.of(HttpStatus.BAD_GATEWAY, "Upstream service error"));
     }
 
     private String extractMessage(ObjectError e) {
