@@ -1,3 +1,5 @@
+![CI](https://github.com/ddryzhov/book-store-microservices/actions/workflows/ci.yml/badge.svg)
+
 <div align="center">
 
 <h1>📚 BookStore Microservices</h1>
@@ -346,21 +348,21 @@ docker compose down -v       # also remove volumes
 
 ## 🧱 Tech Stack
 
-| Category | Technology | Purpose |
-|----------|------------|---------|
+| Category | Technology |
+|----------|------------|
 | Language | Java 25 | — |
-| Framework | Spring Boot 4.0.3 | Application runtime |
-| Service Mesh | Spring Cloud 2025.1 | Gateway, Config Server, Eureka, OpenFeign |
-| Security | Spring Security + JJWT 0.11.5 | Auth filters, JWT signing/validation |
-| Fault Tolerance | Resilience4j | Circuit Breaker, Retry, Time Limiter |
-| Persistence | Spring Data JPA + Hibernate | ORM layer |
-| Database | MySQL 8.0 | Persistent storage — one DB per service |
-| Migrations | Liquibase | Schema versioning and evolution |
-| Mapping | MapStruct 1.5.5 | DTO ↔ Entity — compile-time, zero reflection |
-| Observability | Micrometer + Zipkin + Actuator | Tracing, metrics, health endpoints |
-| API Docs | SpringDoc OpenAPI 3 | Swagger UI per service |
-| Build | Maven 3.9 | Dependency management and build |
-| Boilerplate | Lombok | Getters, builders, `@Slf4j` |
+| Framework | Spring Boot 4.0.3 |
+| Service Mesh | Spring Cloud 2025.1 |
+| Security | Spring Security + JJWT 0.11.5 |
+| Fault Tolerance | Resilience4j |
+| Persistence | Spring Data JPA + Hibernate |
+| Database | MySQL 8.0 |
+| Migrations | Liquibase |
+| Mapping | MapStruct 1.5.5 |
+| Observability | Micrometer + Zipkin + Actuator |
+| API Docs | SpringDoc OpenAPI 3 |
+| Build | Maven 3.9 |
+| Boilerplate | Lombok |
 
 ---
 
@@ -379,7 +381,6 @@ All configuration is externalized to `git-config-repo/` and served by the config
 | `JWT_SECRET` | ✅ | HMAC signing key (min 32 chars) |
 | `JWT_EXPIRATION` | ✅ | Token TTL in ms — e.g. `3600000` = 1 hour |
 | `INTERNAL_TOKEN` | ✅ | Shared secret for service-to-service auth |
-| `CONFIG_GIT_URI` | ✅ | Path to `git-config-repo` directory |
 | `CONFIG_SERVER_URI` | — | Default: `http://localhost:8888` |
 | `EUREKA_URI` | — | Default: `http://localhost:8761/eureka` |
 | `ZIPKIN_URI` | — | Default: `http://localhost:9411` |
